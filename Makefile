@@ -1,4 +1,4 @@
-SRC = src/main.cpp src/RenderWindow.cpp src/TileMap.cpp src/PickMap.cpp src/Pickable.cpp src/usage.cpp src/tools.cpp src/init.cpp
+SRC = src/main.cpp src/RenderWindow.cpp src/TileMap.cpp src/PickMap.cpp src/Pickable.cpp src/usage.cpp src/tools.cpp src/init.cpp src/EventWindow.cpp src/IOFile.cpp
 OBJ = ${SRC:.cpp=.o}
 INC = include/
 

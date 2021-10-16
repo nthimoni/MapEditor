@@ -3,7 +3,7 @@
 
 // Info window
 # define TITLE "MapEditor"
-# define WIN_W 1279
+# define WIN_W (1279 + 320)
 # define WIN_H 742
 
 // Info TileMap
@@ -16,5 +16,8 @@ typedef short int tile_id;
 // Info burger (pickable)
 # define BURGER_W 32
 # define BURGER_H 32
+
+// Info camera mouvement
+# define CAMERA_SPEED 10
 
 #endif

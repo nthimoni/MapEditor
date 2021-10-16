@@ -26,7 +26,6 @@ class RenderWindow
 	public:
 		RenderWindow(const char *p_title, int p_w, int p_h);
 		void AddLayer(const char *p_text, const char *p_tab);
-		void LoadPlayer(const char *player_text);
 		void PrintMap();
 		bool Event();
 		bool isPressed(int indice);
@@ -39,10 +38,14 @@ class RenderWindow
 		void LoadBurgers(const char *texture, const char *tab);
 		void PrintBurgers();
 		void PrintBackground();
-		void LoadFont(const char *font_path, int size);
-		void LoadBurgerSound(const char *sound_path);
+		void SetLevel(int level);
+		void MoveCamera();
+		void PrintTileset();
+		void PrintRect();
+		void save();
 		~RenderWindow();
 	private:
+		int level;
 		SDL_Rect camera;
 		SDL_Window *window;
 		SDL_Renderer *renderer;
@@ -54,6 +57,7 @@ class RenderWindow
 	private:
 		bool KeyDown(SDL_Event *event);
 		bool KeyUp(SDL_Event *event);
+		bool MouseDown(SDL_Event *event);
 };
 
 #endif

@@ -92,6 +92,48 @@ void TileMap::Display(SDL_Rect *camera)
 		}
 }
 
+SDL_Texture *TileMap::GetTexture()
+{
+	return text;
+}
+
+void TileMap::Set(int x, int y)
+{
+	if (x < 0 || y < 0)
+		return;
+	while (y >= (int)tab.size())
+		tab.emplace_back();
+	while (x >= (int)tab[y].size())
+		tab[y].emplace_back();
+	tab[y][x] = ID;
+}
+
+void TileMap::SetID(tile_id id)
+{
+	ID = id;
+}
+
+void TileMap::save(const char *path_map)
+{
+	std::ofstream file(path_map, std::ofstream::trunc);
+	std::string temp ="";
+	for (unsigned int i = 0; i < tab.size(); i++)
+	{
+		if (i != 0)
+			file << '\n';
+		for (unsigned int u = 0; u < tab[i].size(); u++)
+		{
+			if (u != 0)
+				file << '\t';
+			if (tab[i][u] != 0)
+			{
+				temp = std::to_string(tab[i][u]);
+				file << temp;
+			}
+		}
+	}
+}
+
 TileMap::~TileMap()
 {
 	SDL_DestroyTexture(text);

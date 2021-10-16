@@ -84,19 +84,74 @@ void RenderWindow::LoadBackground(const char *bgtext)
 
 void RenderWindow::PrintBackground()
 {
-	SDL_RenderCopy(this->renderer, this->background, NULL, NULL);
+	SDL_Rect dst;
+	dst.x = 0;
+	dst.y = 0;
+	SDL_QueryTexture(background, NULL, NULL, &dst.w, &dst.h);
+	SDL_RenderCopy(this->renderer, this->background, NULL, &dst);
 }
 
-void RenderWindow::LoadFont(const char *font_path, int size)
+void RenderWindow::SetLevel(int level)
 {
-	if (this->font != nullptr)
-		TTF_CloseFont(this->font);
-	this->font = TTF_OpenFont(font_path, size);
+	this->level = level;
 }
 
-void RenderWindow::LoadBurgerSound(const char *sound_path)
+void RenderWindow::MoveCamera()
 {
-	burgers.LoadBurgerSound(sound_path);
+	if (keys[KEY::Z])
+		camera.y -= CAMERA_SPEED;
+	if (keys[KEY::S])
+		camera.y += CAMERA_SPEED;
+	if (keys[KEY::Q])
+		camera.x -= CAMERA_SPEED;
+	if (keys[KEY::D])
+		camera.x += CAMERA_SPEED;
+}
+
+void RenderWindow::PrintTileset()
+{
+	SDL_Rect dst;
+	dst.y = 0;
+	SDL_QueryTexture(background, NULL, NULL, &dst.x, NULL);
+	SDL_QueryTexture(layer[0].GetTexture(), NULL, NULL, &dst.w, &dst.h);
+	SDL_RenderFillRect(renderer, &dst);
+	SDL_RenderCopy(this->renderer, layer[0].GetTexture(), NULL, &dst);
+}
+
+void RenderWindow::PrintRect()
+{
+	SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
+	SDL_Rect rect;
+	SDL_GetMouseState(&rect.x, &rect.y);
+	if (rect.x > (WIN_W - NB_TILE * TILE_W))
+	{
+		rect.x -= (WIN_W - NB_TILE * TILE_W);
+		rect.x /= TILE_W;
+		rect.x *= TILE_W;
+		rect.x += (WIN_W - NB_TILE * TILE_W);
+		rect.y /= TILE_H;
+		rect.y *= TILE_H;
+	}
+	else
+	{
+		rect.x += camera.x;
+		rect.x /= TILE_W;
+		rect.x *= TILE_W;
+		rect.x -= camera.x;
+		rect.y += camera.y;
+		rect.y /= TILE_H;
+		rect.y *= TILE_H;
+		rect.y -= camera.y;
+	}
+	rect.w = TILE_W;
+	rect.h = TILE_H;
+	SDL_RenderDrawRect(renderer, &rect);
+	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+}
+
+void RenderWindow::save()
+{
+	layer[0].save("level/1/Map.txt");
 }
 
 RenderWindow::~RenderWindow()
