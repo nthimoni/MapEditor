@@ -15,6 +15,8 @@ TileMap::TileMap(const char *text_path, const char *tab_path, SDL_Renderer *p_re
 {
 	this->LoadTab(tab_path);
 	this->LoadTexture(text_path);
+	ID.emplace_back();
+	ID[0].emplace_back(0);
 }
 
 void TileMap::LoadTab(const char *p_path)
@@ -101,16 +103,41 @@ void TileMap::Set(int x, int y)
 {
 	if (x < 0 || y < 0)
 		return;
-	while (y >= (int)tab.size())
-		tab.emplace_back();
-	while (x >= (int)tab[y].size())
-		tab[y].emplace_back();
-	tab[y][x] = ID;
+	for (unsigned int u = 0; u < ID.size(); u++)
+	{
+		for (unsigned int i = 0; i < ID[u].size(); i++)
+		{
+		while (y + (int)i >= (int)tab.size())
+			tab.emplace_back();
+		while (x + (int)u >= (int)tab[y + i].size())
+			tab[y + i].emplace_back();
+		tab[y + i][x + u] = ID[u][i];
+		}
+	}
 }
 
-void TileMap::SetID(tile_id id)
+void TileMap::SetIdMap(SDL_Rect selection)
 {
-	ID = id;
+	ID.clear();
+	for (int i = selection.x / TILE_W; i <= (selection.x + selection.w) / TILE_W; i++)
+	{
+
+		ID.emplace_back();
+		for (int u = selection.y / TILE_H; u <= (selection.y + selection.h) / TILE_H; u++)
+			ID[i - selection.x / TILE_W].emplace_back(this->Get(i, u));
+	}
+}
+
+void TileMap::SetIdTileset(SDL_Rect selection)
+{
+	ID.clear();
+	for (int i = selection.x / TILE_W; i <= (selection.x + selection.w) / TILE_W; i++)
+	{
+
+		ID.emplace_back();
+		for (int u = selection.y / TILE_H; u <= (selection.y + selection.h) / TILE_H; u++)
+			ID[i - selection.x / TILE_W].emplace_back(u * NB_TILE + i);
+	}
 }
 
 void TileMap::save(const char *path_map)

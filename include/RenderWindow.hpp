@@ -45,6 +45,10 @@ class RenderWindow
 		void save();
 		~RenderWindow();
 	private:
+		bool nextBurger;
+		int yTileSet;
+		SDL_Rect selection;
+		Vector2 start_selec;
 		int level;
 		SDL_Rect camera;
 		SDL_Window *window;
@@ -58,6 +62,7 @@ class RenderWindow
 		bool KeyDown(SDL_Event *event);
 		bool KeyUp(SDL_Event *event);
 		bool MouseDown(SDL_Event *event);
+		bool MouseUp(SDL_Event *event);
 };
 
 #endif

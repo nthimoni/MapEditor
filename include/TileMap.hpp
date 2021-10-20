@@ -8,6 +8,7 @@
 #include <vector>
 
 #include "constantes.hpp"
+#include "tools.hpp"
 
 class TileMap
 {
@@ -20,15 +21,17 @@ class TileMap
 		SDL_Texture  *GetTexture();
 		tile_id Get(int x, int y);
 		void Set(int x, int y);
-		void SetID(tile_id id);
+		void SetIdMap(SDL_Rect selection);
+		void SetIdTileset(SDL_Rect selection);
 		void save(const char *path_map);
 		~TileMap();
 	private:
-		tile_id ID;
+		std::vector<std::vector<tile_id>> ID;
 		SDL_Texture *text;
 		SDL_Renderer *renderer;
 		std::vector<std::vector<tile_id>> tab;
 		void ParseLine(std::string line);
+
 };
 
 #endif

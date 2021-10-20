@@ -11,7 +11,7 @@
 #include "tools.hpp"
 
 RenderWindow::RenderWindow(const char *p_title, int p_w, int p_h)
-	: window(NULL), renderer(NULL), background(NULL), keys(4, false), font(NULL)
+	:nextBurger(false), yTileSet(0), window(NULL), renderer(NULL), background(NULL), keys(4, false), font(NULL)
 {
 	window = SDL_CreateWindow(p_title, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, p_w, p_h, SDL_WINDOW_SHOWN);
 	if (!window)
@@ -59,18 +59,20 @@ void RenderWindow::Render()
 
 void RenderWindow::setCamera(Vector2 *pos)
 {
-	camera.x = pos->x;
-	camera.y = pos->y;
+	this->setCameraX(pos->x);
+	this->setCameraY(pos->y);
 }
 
 void RenderWindow::setCameraX(int x)
 {
-	camera.x = x;
+	if (x >= 0)
+		camera.x = x;
 }
 
 void RenderWindow::setCameraY(int y)
 {
-	camera.y = y;
+	if (y >= 0)
+		camera.y = y;
 }
 
 void RenderWindow::LoadBackground(const char *bgtext)
@@ -106,13 +108,17 @@ void RenderWindow::MoveCamera()
 		camera.x -= CAMERA_SPEED;
 	if (keys[KEY::D])
 		camera.x += CAMERA_SPEED;
+	if (camera.x < 0)
+		camera.x = 0;
+	if (camera.y < 0)
+		camera.y = 0;
 }
 
 void RenderWindow::PrintTileset()
 {
 	SDL_Rect dst;
-	dst.y = 0;
-	SDL_QueryTexture(background, NULL, NULL, &dst.x, NULL);
+	dst.y = yTileSet;
+	dst.x = WIN_W - NB_TILE * TILE_W;
 	SDL_QueryTexture(layer[0].GetTexture(), NULL, NULL, &dst.w, &dst.h);
 	SDL_RenderFillRect(renderer, &dst);
 	SDL_RenderCopy(this->renderer, layer[0].GetTexture(), NULL, &dst);
@@ -129,8 +135,10 @@ void RenderWindow::PrintRect()
 		rect.x /= TILE_W;
 		rect.x *= TILE_W;
 		rect.x += (WIN_W - NB_TILE * TILE_W);
+		rect.y -= yTileSet;
 		rect.y /= TILE_H;
 		rect.y *= TILE_H;
+		rect.y += yTileSet;
 	}
 	else
 	{

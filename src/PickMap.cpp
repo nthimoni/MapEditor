@@ -105,6 +105,29 @@ void PickMap::LoadBurgerSound(const char *sound_path)
 	music = Mix_LoadMUS(sound_path);
 }
 
+void PickMap::Change(int x, int y)
+{
+	while (y >= (int)tab.size())
+		tab.emplace_back();
+	while (x >= (int)tab[y].size())
+		tab[y].emplace_back(nullptr);
+	if (tab[y][x] == nullptr)
+	{
+		SDL_Rect obj;
+		obj.x = x * BURGER_W;
+		obj.y = y * BURGER_H;
+		obj.w = BURGER_W;
+		obj.h = BURGER_H;
+
+		tab[y][x] = new Pickable(&obj);
+	}
+	else
+	{
+		delete tab[y][x];
+		tab[y][x] = nullptr;
+	}
+}
+
 PickMap::~PickMap()
 {
 	SDL_DestroyTexture(texture);

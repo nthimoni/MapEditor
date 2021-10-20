@@ -21,6 +21,7 @@ class PickMap
 		void FreeTab();
 		bool pickUp(int x, int y);
 		void LoadBurgerSound(const char *sound_path);
+		void Change(int x, int y);
 		~PickMap();
 	private:
 		void ParseLine(std::string line);
