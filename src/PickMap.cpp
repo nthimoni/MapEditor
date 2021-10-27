@@ -128,6 +128,23 @@ void PickMap::Change(int x, int y)
 	}
 }
 
+void PickMap::save(const char *pathFile)
+{
+	std::ofstream file(pathFile, std::ofstream::trunc);
+	for (unsigned int i = 0; i < tab.size(); i++)
+	{
+		if (i != 0)
+			file << '\n';
+		for (unsigned int u = 0; u < tab[i].size(); u++)
+		{
+			if (u != 0)
+				file << '\t';
+			if (tab[i][u] != nullptr)
+				file << 1;
+		}
+	}
+}
+
 PickMap::~PickMap()
 {
 	SDL_DestroyTexture(texture);

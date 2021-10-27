@@ -133,7 +133,6 @@ void TileMap::SetIdTileset(SDL_Rect selection)
 	ID.clear();
 	for (int i = selection.x / TILE_W; i <= (selection.x + selection.w) / TILE_W; i++)
 	{
-
 		ID.emplace_back();
 		for (int u = selection.y / TILE_H; u <= (selection.y + selection.h) / TILE_H; u++)
 			ID[i - selection.x / TILE_W].emplace_back(u * NB_TILE + i);
@@ -143,7 +142,6 @@ void TileMap::SetIdTileset(SDL_Rect selection)
 void TileMap::save(const char *path_map)
 {
 	std::ofstream file(path_map, std::ofstream::trunc);
-	std::string temp ="";
 	for (unsigned int i = 0; i < tab.size(); i++)
 	{
 		if (i != 0)
@@ -153,10 +151,7 @@ void TileMap::save(const char *path_map)
 			if (u != 0)
 				file << '\t';
 			if (tab[i][u] != 0)
-			{
-				temp = std::to_string(tab[i][u]);
-				file << temp;
-			}
+				file << tab[i][u];
 		}
 	}
 }

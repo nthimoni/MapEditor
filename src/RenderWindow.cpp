@@ -160,6 +160,7 @@ void RenderWindow::PrintRect()
 void RenderWindow::save()
 {
 	layer[0].save("level/1/Map.txt");
+	burgers.save("level/1/BurgerMap.txt");
 }
 
 RenderWindow::~RenderWindow()

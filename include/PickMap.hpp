@@ -22,6 +22,8 @@ class PickMap
 		bool pickUp(int x, int y);
 		void LoadBurgerSound(const char *sound_path);
 		void Change(int x, int y);
+		void save(const char *file);
+
 		~PickMap();
 	private:
 		void ParseLine(std::string line);
